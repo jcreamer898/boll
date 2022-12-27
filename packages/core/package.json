@@ -8,6 +8,7 @@
     "graceful-fs": "4.2.4",
     "parse-gitignore": "^1.0.1",
     "typescript": "^3.9.7",
+    "workspace-tools": "^0.29.1",
     "yaml": "^1.10.0"
   },
   "description": "> TODO: description",

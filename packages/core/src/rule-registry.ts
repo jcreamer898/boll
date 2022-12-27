@@ -21,4 +21,18 @@ export class RuleRegistry {
   }
 }
 
+/*
+addRule("name", (logger, options) => {
+  return (files) => {};
+});
+
+addRule("name", (logger, options) => {
+  return ({ filename, content }) => {};
+});
+*/
+
+export const addRule = <T extends Rule>(name: string, create: RuleDefinition<T>) => {
+  RuleRegistryInstance.register(name, create);
+};
+
 export const RuleRegistryInstance = new RuleRegistry();

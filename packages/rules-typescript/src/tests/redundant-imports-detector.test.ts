@@ -31,7 +31,7 @@ test("Should fail for missing imports if few imports are declared in devDependen
   await inFixtureDir("redundant-imports-detector", __dirname, async () => {
     const sut = new RedundantImportsDetector();
     const result = await sut.check(
-      await getSourceFile(asBollDirectory("."), "redundant-imports-detector.ts", new Package({}, {}))
+      await getSourceFile(asBollDirectory("."), "redundant-imports-detector.ts", {})
     );
     const failure = result[0] as Failure;
     const failure1 = result[1] as Failure;
