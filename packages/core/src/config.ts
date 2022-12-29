@@ -16,6 +16,7 @@ export class Config {
   async buildSuite(): Promise<Suite> {
     const suite = new Suite();
     suite.ruleSets = await this.loadRuleSets();
+    
     return suite;
   }
 
@@ -39,16 +40,29 @@ export class Config {
         const optionsFromConfig =
           (config.configuration && config.configuration.rules && (config.configuration.rules as any)[check.rule]) || {};
         const options = { ...check.options, ...optionsFromConfig };
-        const rule = this.ruleRegistry.get<PackageRule>(check.rule)(this.logger, options);
-        return new InstantiatedPackageRule(rule.name, check.severity || "error", rule);
+        const fn = this.ruleRegistry.get<PackageRule>(check.rule);
+
+        if (typeof fn === "function") {
+          const rule = fn(this.logger, options);
+          return new InstantiatedPackageRule(rule.name, check.severity || "error", rule);
+        }
+
+        return new InstantiatedPackageRule(fn.name, check.severity || "error", fn, options);
       });
       const metaChecks = ((ruleSetConfig.checks && ruleSetConfig.checks.meta) || []).map(check => {
         const optionsFromConfig =
           (config.configuration && config.configuration.rules && (config.configuration.rules as any)[check.rule]) || {};
         const options = { ...check.options, ...optionsFromConfig };
-        const rule = this.ruleRegistry.get<PackageMetaRule>(check.rule)(this.logger, options);
-        return new InstantiatedPackageMetaRule(rule.name, check.severity || "error", rule);
+        const fn = this.ruleRegistry.get<PackageMetaRule>(check.rule);
+
+        if (typeof fn === "function") {
+          const rule = fn(this.logger, options);
+          return new InstantiatedPackageMetaRule(rule.name, check.severity || "error", rule);
+        }
+
+        return new InstantiatedPackageMetaRule(fn.name, check.severity || "error", fn, options);
       });
+
       return new RuleSet(glob, fileChecks, metaChecks);
     });
   }

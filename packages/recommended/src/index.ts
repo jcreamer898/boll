@@ -1,10 +1,12 @@
 import {
+  addRule,
   ConfigDefinition,
   ConfigRegistryInstance,
   Logger,
   PackageJsonGlob,
   RuleRegistryInstance,
-  TypescriptSourceGlob
+  TypescriptSourceGlob,
+  WorkspacesGlob,
 } from "@boll/core";
 import {
   CrossPackageDependencyDetector,
@@ -14,7 +16,8 @@ import {
   TransitiveDependencyDetector
 } from "@boll/rules-typescript";
 import { ESLintPreferConstRule } from "@boll/rules-external-tools";
-import { EnforceRationale, NoRedundantDepsRule, PackageConsistency } from "@boll/rules-core";
+import { EnsureBoll } from "@boll/rules-monorepo";
+import { EnforceRationale, NoRedundantDepsRule } from "@boll/rules-core";
 
 let bootstrapRun = false;
 export const bootstrapRecommendedConfiguration = () => {
@@ -34,10 +37,13 @@ export const bootstrapRecommendedConfiguration = () => {
   RuleRegistryInstance.register("NoRedundantDepsRule", (l: Logger) => new NoRedundantDepsRule(l));
   RuleRegistryInstance.register("EnforceRationale", () => new EnforceRationale());
   RuleRegistryInstance.register("PackageConsistency", (l: Logger, options: any) => new EnforceRationale(options));
+  addRule(EnsureBoll);
 
   ConfigRegistryInstance.register(RecommendedConfig);
+  ConfigRegistryInstance.register(MonorepoConfig);
   bootstrapRun = true;
 };
+export const bootstrap = bootstrapRecommendedConfiguration;
 
 export const RecommendedConfig: ConfigDefinition = {
   name: "boll:recommended",
@@ -57,6 +63,30 @@ export const RecommendedConfig: ConfigDefinition = {
     {
       fileLocator: new PackageJsonGlob(),
       checks: { file: [{ rule: "NoRedundantDepsRule" }, { rule: "PackageConsistency" }] }
+    }
+  ]
+};
+
+export const MonorepoConfig: ConfigDefinition = {
+  name: "boll:monorepo",
+  ruleSets: [
+    {
+      fileLocator: new WorkspacesGlob(),
+      checks: {
+        meta: [{ rule: "EnsureBoll" }]
+      }
+    },
+    {
+      fileLocator: new TypescriptSourceGlob(),
+      checks: {
+        file: [
+          { rule: "SrcDetector" },
+          { rule: "CrossPackageDependencyDetector" },
+          { rule: "TransitiveDependencyDetector" },
+          { rule: "NodeModulesReferenceDetector" },
+          { rule: "RedundantImportsDetector" }
+        ],
+      }
     }
   ]
 };

@@ -1016,6 +1016,13 @@
     "@boll/core" "2.0.0"
     eslint "^7.8.1"
 
+"@boll/rules-monorepo@0.1.0", "@boll/rules-monorepo@file:/home/jcreamer/microsoft/repos/boll/packages/rules-monorepo":
+  version "0.1.0"
+  resolved "file:packages/rules-monorepo"
+  dependencies:
+    "@boll/core" "2.0.0"
+    typescript "^3.9.7"
+
 "@boll/rules-typescript@1.0.0", "@boll/rules-typescript@file:/home/jcreamer/microsoft/repos/boll/packages/rules-typescript":
   version "1.0.0"
   resolved "file:packages/rules-typescript"

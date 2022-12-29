@@ -1,20 +1,19 @@
 {
-  "author": "JD Huntington <jdh@microsoft.com>",
+  "author": "Jonathan Creamer",
   "bugs": {
     "url": "https://github.com/microsoft/boll/issues"
   },
   "dependencies": {
     "@boll/core": "2.0.0",
-    "@boll/rules-external-tools": "0.1.7",
-    "@boll/rules-core": "0.1.7",
-    "@boll/rules-monorepo": "0.1.0",
-    "@boll/rules-typescript": "1.0.0"
+    "typescript": "^3.9.7"
   },
-  "description": "Recommended configuration for TypeScript monorepos ",
+  "description": "@boll rules for a large monorepo",
   "devDependencies": {
+    "@boll/test-internal": "0.0.1",
+    "@types/baretest": "^2.0.0",
+    "baretest": "^2.0.0",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
-    "ts-node-dev": "^1.0.0-pre.58",
     "typedoc": "^0.19.1",
     "typedoc-plugin-markdown": "^2.4.2"
   },
@@ -25,7 +24,7 @@
   "homepage": "https://github.com/microsoft/boll#readme",
   "license": "MIT",
   "main": "dist/index.js",
-  "name": "@boll/recommended",
+  "name": "@boll/rules-monorepo",
   "publishConfig": {
     "access": "public"
   },
@@ -36,7 +35,8 @@
   "scripts": {
     "build": "tsc",
     "clean": "rimraf ./dist",
-    "docs": "typedoc --mode file --out ./apidocs --theme markdown ./src"
+    "docs": "typedoc --mode file --out ./apidocs --theme markdown ./src",
+    "test": ""
   },
-  "version": "1.0.0"
+  "version": "0.1.0"
 }

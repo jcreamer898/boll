@@ -4,16 +4,16 @@ import { Rule } from "./types";
 export type RuleDefinition<T extends Rule> = (logger: Logger, options?: {}) => T;
 
 export class RuleRegistry {
-  public registrations: { [name: string]: RuleDefinition<Rule> } = {};
+  public registrations: { [name: string]: RuleDefinition<Rule> | Rule } = {};
 
-  register<T extends Rule>(name: string, factory: RuleDefinition<T>) {
+  register<T extends Rule>(name: string, factory: RuleDefinition<T> | T) {
     if (this.registrations[name]) {
       throw new Error(`Already know about rule "${name}", cannot redefine.`);
     }
     this.registrations[name] = factory;
   }
 
-  get<T extends Rule>(name: string): RuleDefinition<T> {
+  get<T extends Rule>(name: string): RuleDefinition<T> | T {
     if (!this.registrations[name]) {
       throw new Error(`Don't know about rule "${name}".`);
     }
@@ -31,8 +31,8 @@ addRule("name", (logger, options) => {
 });
 */
 
-export const addRule = <T extends Rule>(name: string, create: RuleDefinition<T>) => {
-  RuleRegistryInstance.register(name, create);
+export const addRule = <T extends Rule>(rule: T, instance: RuleRegistry = RuleRegistryInstance) => {
+  instance.register<T>(rule.name, rule);
 };
 
 export const RuleRegistryInstance = new RuleRegistry();

@@ -51,12 +51,12 @@ export class WorkspacesGlob implements FileGlob {
   public include: string[] = [];
   public cwd: string;
 
-  constructor(cwd: string = process.cwd()) {
+  constructor(cwd: string) {
     this.cwd = cwd;
   }
 
   findFiles(): Promise<BollFile[]> {
-    const workspaces = getWorkspaces(this.cwd).map(({ path }) => {
+    const workspaces = getWorkspaces(this.cwd || process.cwd()).map(({ path }) => {
       return `${path}/package.json`;
     });
 
