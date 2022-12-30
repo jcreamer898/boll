@@ -16,7 +16,7 @@ export class Config {
   async buildSuite(): Promise<Suite> {
     const suite = new Suite();
     suite.ruleSets = await this.loadRuleSets();
-    
+
     return suite;
   }
 
@@ -73,14 +73,14 @@ export class Config {
 
   resolvedConfiguration(): ConfigDefinition {
     this.bootstrapPackages();
-    
+
     const parentConfiguration = this.resolveParentConfiguration(this.configuration.extends);
     const finalResult = this.mergeConfigurations(this.configuration, parentConfiguration);
     return finalResult;
   }
 
   loadExternalPlugin(fullPkgName: string) {
-    return this.requirePlugin(fullPkgName)
+    return this.requirePlugin(fullPkgName);
   }
 
   loadBollPlugin(plugin: string) {
@@ -97,7 +97,7 @@ export class Config {
     try {
       const pkg = require(fullPkgName);
       return pkg;
-    } catch(e) {
+    } catch (e) {
       throw new Error(`Could not load plugin ${fullPkgName}.`);
     }
   }
@@ -112,7 +112,7 @@ export class Config {
       } else if (prefix === "plugin") {
         plugin = this.loadExternalPlugin(pkg);
       }
-      
+
       plugin?.bootstrap();
     }
   }

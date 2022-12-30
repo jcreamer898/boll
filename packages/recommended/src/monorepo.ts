@@ -1,16 +1,11 @@
-import {
-  addRule,
-  ConfigDefinition,
-  ConfigRegistryInstance,
-  WorkspacesGlob,
-} from "@boll/core";
+import { addRule, ConfigDefinition, ConfigRegistryInstance, WorkspacesGlob } from "@boll/core";
 import { EnsureBoll } from "@boll/rules-monorepo";
 
-export const bootstrap = () => {  
+export const bootstrap = () => {
   addRule(EnsureBoll);
 
   ConfigRegistryInstance.register(MonorepoConfig);
-}
+};
 
 const MonorepoConfig: ConfigDefinition = {
   name: "boll:recommended/monorepo",
@@ -20,6 +15,6 @@ const MonorepoConfig: ConfigDefinition = {
       checks: {
         meta: [{ rule: "EnsureBoll" }]
       }
-    },
+    }
   ]
 };

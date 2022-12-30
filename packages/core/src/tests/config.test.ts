@@ -81,14 +81,17 @@ test("addRule function can register and pass options", async () => {
   const configRegistry = new ConfigRegistry();
   const ruleRegistry = new RuleRegistry();
 
-  addRule<PackageRule>({
-    name: "foo",
-    check: async (filename: any) => {
-      const results: Result[] = [];
+  addRule<PackageRule>(
+    {
+      name: "foo",
+      check: async (filename: any) => {
+        const results: Result[] = [];
 
-      return results;
+        return results;
+      }
     },
-  }, ruleRegistry);
+    ruleRegistry
+  );
 
   const config = new Config(configRegistry, ruleRegistry, NullLogger);
   config.load({
@@ -96,7 +99,10 @@ test("addRule function can register and pass options", async () => {
   });
   const { ruleSets } = await config.buildSuite();
 
-  assert.ok(ruleSets[0].fileChecks[0].options?.bar, "addRule should have been invoked with correct args when creating suite.");
+  assert.ok(
+    ruleSets[0].fileChecks[0].options?.bar,
+    "addRule should have been invoked with correct args when creating suite."
+  );
 });
 
 test("downstream rules configuration applies to rules", async () => {

@@ -61,11 +61,9 @@ test("Should fail for missing imports if few imports are declared in devDependen
   await inFixtureDir("transitive-reference", __dirname, async () => {
     const sut = new TransitiveDependencyDetector({ allowDevDependencies: true });
     const result = await sut.check(
-      await getSourceFile(
-        asBollDirectory("."),
-        "transitive-reference.ts",
-        { devDependencies: { "@some/other-package": "0" } }
-      )
+      await getSourceFile(asBollDirectory("."), "transitive-reference.ts", {
+        devDependencies: { "@some/other-package": "0" }
+      })
     );
     const failure = result[0] as Failure;
     const failure1 = result[1] as Failure;

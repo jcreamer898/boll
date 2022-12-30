@@ -8,10 +8,10 @@ export const parse = (fileContents: string): PackageInfo => {
     return {
       ...json,
       dependencies: json.dependencies || {},
-      devDependencies: json.devDependencies || {},
+      devDependencies: json.devDependencies || {}
     };
   } catch (e) {
-    console.log({e })
+    console.log({ e });
     return {} as PackageInfo;
   }
 };

@@ -6,7 +6,7 @@ import {
   PackageJsonGlob,
   RuleRegistryInstance,
   TypescriptSourceGlob,
-  WorkspacesGlob,
+  WorkspacesGlob
 } from "@boll/core";
 import {
   CrossPackageDependencyDetector,

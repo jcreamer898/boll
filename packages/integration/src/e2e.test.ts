@@ -6,7 +6,6 @@ import { NullLogger } from "@boll/core";
 import { bootstrapRecommendedConfiguration } from "@boll/recommended";
 export const test: any = baretest("e2e");
 
-
 test("should catch an error in project-a", async () => {
   await inFixtureDir("project-a", __dirname, async () => {
     const suite = await buildSuite(NullLogger);
@@ -52,8 +51,8 @@ test("should catch an error in monorepo", async () => {
     const suite = await buildSuite(NullLogger);
     const result = await suite.run(NullLogger);
 
-    assert.ok(result.errors[0].formattedMessage.includes("No boll config"))
-    assert.ok(result.errors[1].formattedMessage.includes("No \"lint\" script found"))
+    assert.ok(result.errors[0].formattedMessage.includes("No boll config"));
+    assert.ok(result.errors[1].formattedMessage.includes('No "lint" script found'));
 
     assert.strictEqual(2, result.errors.length);
   });

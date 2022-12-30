@@ -67,9 +67,13 @@ export class TransitiveDependencyDetector implements PackageRule {
     return errors;
   }
 
-  isValidImport(packageDependencies: Package["dependencies"], packageDevDependencies: Package['devDependencies'], importPath: string): any {
+  isValidImport(
+    packageDependencies: Package["dependencies"],
+    packageDevDependencies: Package["devDependencies"],
+    importPath: string
+  ): any {
     let validImports = Object.keys(packageDependencies || {}).concat(this.options.ignorePackages);
-    
+
     if (this.options.allowDevDependencies) {
       validImports = validImports.concat(Object.keys(packageDevDependencies || {}));
     }

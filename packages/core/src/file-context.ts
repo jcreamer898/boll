@@ -29,11 +29,11 @@ export class FileContext {
     return this._sourceFile;
   }
 
-  get packageDependencies(): Package['dependencies'] | undefined {
+  get packageDependencies(): Package["dependencies"] | undefined {
     return this.packageContext.dependencies;
   }
 
-  get packageDevDependencies(): Package['devDependencies'] | undefined {
+  get packageDevDependencies(): Package["devDependencies"] | undefined {
     return this.packageContext.devDependencies;
   }
 

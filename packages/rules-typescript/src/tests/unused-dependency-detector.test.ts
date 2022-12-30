@@ -161,12 +161,7 @@ test("Fixture test should succeed because all declared dependencies are imported
     const results = await sut.check(
       ["a.ts", "b.ts", "c.ts"].map(
         f =>
-          new FileContext(
-            asBollDirectory("."),
-            parse(pkgJson),
-            asBollFile(f),
-            readFileSync(asBollFile(f)).toString()
-          )
+          new FileContext(asBollDirectory("."), parse(pkgJson), asBollFile(f), readFileSync(asBollFile(f)).toString())
       )
     );
     assert.deepStrictEqual(results.length, 1);
@@ -181,12 +176,7 @@ test("Fixture test should succeed because unused dependencies are excluded", asy
     const results = await sut.check(
       ["a.ts", "b.ts", "c.ts"].map(
         f =>
-          new FileContext(
-            asBollDirectory("."),
-            parse(pkgJson),
-            asBollFile(f),
-            readFileSync(asBollFile(f)).toString()
-          )
+          new FileContext(asBollDirectory("."), parse(pkgJson), asBollFile(f), readFileSync(asBollFile(f)).toString())
       )
     );
     assert.deepStrictEqual(results.length, 1);
@@ -220,12 +210,7 @@ test("Fixture test should fail because a dependency is not imported in code", as
     const results = await sut.check(
       ["a.ts", "b.ts", "c.ts"].map(
         f =>
-          new FileContext(
-            asBollDirectory("."),
-            parse(pkgJson),
-            asBollFile(f),
-            readFileSync(asBollFile(f)).toString()
-          )
+          new FileContext(asBollDirectory("."), parse(pkgJson), asBollFile(f), readFileSync(asBollFile(f)).toString())
       )
     );
     assert.deepStrictEqual(results.length, 1);
@@ -244,12 +229,7 @@ test("Fixture test should fail because several dependencies are not imported in 
     const results = await sut.check(
       ["a.ts", "b.ts", "c.ts"].map(
         f =>
-          new FileContext(
-            asBollDirectory("."),
-            parse(pkgJson),
-            asBollFile(f),
-            readFileSync(asBollFile(f)).toString()
-          )
+          new FileContext(asBollDirectory("."), parse(pkgJson), asBollFile(f), readFileSync(asBollFile(f)).toString())
       )
     );
     assert.deepStrictEqual(results.length, 4);
