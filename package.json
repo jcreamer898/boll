@@ -18,6 +18,7 @@
     "docs": "lerna run docs --stream",
     "format": "./node_modules/.bin/prettier --write './**/src/**/*'",
     "lint": "./node_modules/.bin/prettier --check './**/src/**/*'",
+    "lint:repo": "node ./packages/cli/bin/boll.js run",
     "release": "beachball publish -b origin/main",
     "test": "lage run test"
   },

@@ -79,23 +79,41 @@ export class Config {
     return finalResult;
   }
 
+  loadExternalPlugin(fullPkgName: string) {
+    return this.requirePlugin(fullPkgName)
+  }
+
+  loadBollPlugin(plugin: string) {
+    const [base, ...rest] = plugin?.split("/");
+    let fullPkgName = `@boll/${plugin}`;
+    if (rest && rest.length >= 1) {
+      fullPkgName = `@boll/${base}/dist/${[...rest].join("/")}`;
+    }
+
+    return this.requirePlugin(fullPkgName);
+  }
+
+  requirePlugin(fullPkgName: string) {
+    try {
+      const pkg = require(fullPkgName);
+      return pkg;
+    } catch(e) {
+      throw new Error(`Could not load plugin ${fullPkgName}.`);
+    }
+  }
+
   bootstrapPackages() {
     if (this.configuration.extends) {
-      const pkgName = this.configuration.extends.split(":").pop() as string;
-      const [base, ...rest] = pkgName?.split("/");
-      let fullPkgName = `@boll/${pkgName}`;
-      if (rest && rest.length >= 1) {
-        fullPkgName = `@boll/${base}/dist/${[...rest].join("/")}`;
-      }
+      const [prefix, pkg] = this.configuration.extends.split(":");
 
-      try {
-        const pkg = require(fullPkgName);
-        if (pkg.bootstrap) {
-          pkg.bootstrap();
-        }
-      } catch(e) {
-        console.log(e)
+      let plugin;
+      if (prefix === "boll") {
+        plugin = this.loadBollPlugin(pkg);
+      } else if (prefix === "plugin") {
+        plugin = this.loadExternalPlugin(pkg);
       }
+      
+      plugin?.bootstrap();
     }
   }
 

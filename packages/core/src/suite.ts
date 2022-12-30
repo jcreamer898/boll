@@ -35,19 +35,21 @@ export class Suite {
       sourceFilePaths.map(filename => getSourceFile(projectRoot, filename, packageContext))
     );
 
-    ruleSet.fileChecks.forEach(r => {
-      sourceFiles.forEach(async s => {
+    await Promise.all(ruleSet.fileChecks.map(async r => {
+      await Promise.all(sourceFiles.map(async s => {
         if (s.shouldSkip(r)) return;
         const results = await r.check(s);
         const filteredResults = await this.filterIgnoredChecksByLine(results, s);
         this.addFailuresWithSeverity(r, filteredResults, resultSet);
-      });
-    });
-    ruleSet.metaChecks.forEach(async r => {
+      }));
+    }));
+
+    await Promise.all(ruleSet.metaChecks.map(async r => {
       const unskippedSourceFiles = sourceFiles.filter(s => !s.shouldSkip(r));
       const results = await r.check(unskippedSourceFiles);
       this.addFailuresWithSeverity(r, results, resultSet);
-    });
+    }));
+
     return true;
   }
 

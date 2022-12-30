@@ -1,7 +1,19 @@
 import { join, dirname } from "path";
-import * as fs from "fs";
+import fs from "fs";
 import { FileContext, RuleOptions } from "@boll/core";
 import chalk from "chalk";
+
+const exists = (path: string) => {
+  return new Promise<boolean>((resolve, reject) => {
+    fs.stat(path, (err) => {
+      if (err) {
+        resolve(false);
+      } else {
+        resolve(true);
+      }
+    });
+  });
+};
 
 /**
  * Check to see if packages have a boll config, and a lint verb
@@ -19,28 +31,22 @@ export const EnsureBoll = {
 
       let hasBoll = false;
       let hasIgnore = false;
+      let bollConfig = join(
+        dirname(filename),
+        ".boll.config.js"
+      );
 
-      try {
-        require(join(
-          dirname(filename),
-          ".boll.config.js"
-        ));
-        hasBoll = true;
-      } catch (e) {
-        // ignore
-      }
-      try {
-        await fs.promises.stat(join(
-          dirname(filename),
-          ".bollignore"
-        ));
-        hasIgnore = true;
-      } catch(e) {
+      hasBoll = await exists(bollConfig);
 
-      }
+      let bollIgnore = join(
+        dirname(filename),
+        ".bollignore"
+      );
+
+      hasIgnore = await exists(bollIgnore);
       
       const hasLintScript = pkg.scripts && pkg.scripts.lint;
-
+      
       if (!hasBoll && !hasIgnore) {
         errors.push({
           formattedMessage: `[${chalk.red(
