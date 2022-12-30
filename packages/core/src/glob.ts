@@ -51,7 +51,7 @@ export class WorkspacesGlob implements FileGlob {
   public include: string[] = [];
   public cwd: string;
 
-  constructor(cwd: string) {
+  constructor(cwd: string = "") {
     this.cwd = cwd;
   }
 

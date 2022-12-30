@@ -16,10 +16,13 @@ import {
   TransitiveDependencyDetector
 } from "@boll/rules-typescript";
 import { ESLintPreferConstRule } from "@boll/rules-external-tools";
-import { EnsureBoll } from "@boll/rules-monorepo";
 import { EnforceRationale, NoRedundantDepsRule } from "@boll/rules-core";
 
 let bootstrapRun = false;
+
+/**
+ * @deprecated
+ */
 export const bootstrapRecommendedConfiguration = () => {
   if (bootstrapRun) return;
 
@@ -37,10 +40,9 @@ export const bootstrapRecommendedConfiguration = () => {
   RuleRegistryInstance.register("NoRedundantDepsRule", (l: Logger) => new NoRedundantDepsRule(l));
   RuleRegistryInstance.register("EnforceRationale", () => new EnforceRationale());
   RuleRegistryInstance.register("PackageConsistency", (l: Logger, options: any) => new EnforceRationale(options));
-  addRule(EnsureBoll);
 
   ConfigRegistryInstance.register(RecommendedConfig);
-  ConfigRegistryInstance.register(MonorepoConfig);
+
   bootstrapRun = true;
 };
 export const bootstrap = bootstrapRecommendedConfiguration;
@@ -63,30 +65,6 @@ export const RecommendedConfig: ConfigDefinition = {
     {
       fileLocator: new PackageJsonGlob(),
       checks: { file: [{ rule: "NoRedundantDepsRule" }, { rule: "PackageConsistency" }] }
-    }
-  ]
-};
-
-export const MonorepoConfig: ConfigDefinition = {
-  name: "boll:monorepo",
-  ruleSets: [
-    {
-      fileLocator: new WorkspacesGlob(),
-      checks: {
-        meta: [{ rule: "EnsureBoll" }]
-      }
-    },
-    {
-      fileLocator: new TypescriptSourceGlob(),
-      checks: {
-        file: [
-          { rule: "SrcDetector" },
-          { rule: "CrossPackageDependencyDetector" },
-          { rule: "TransitiveDependencyDetector" },
-          { rule: "NodeModulesReferenceDetector" },
-          { rule: "RedundantImportsDetector" }
-        ],
-      }
     }
   ]
 };

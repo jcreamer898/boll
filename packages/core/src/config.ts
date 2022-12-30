@@ -72,15 +72,38 @@ export class Config {
   }
 
   resolvedConfiguration(): ConfigDefinition {
+    this.bootstrapPackages();
+    
     const parentConfiguration = this.resolveParentConfiguration(this.configuration.extends);
     const finalResult = this.mergeConfigurations(this.configuration, parentConfiguration);
     return finalResult;
+  }
+
+  bootstrapPackages() {
+    if (this.configuration.extends) {
+      const pkgName = this.configuration.extends.split(":").pop() as string;
+      const [base, ...rest] = pkgName?.split("/");
+      let fullPkgName = `@boll/${pkgName}`;
+      if (rest && rest.length >= 1) {
+        fullPkgName = `@boll/${base}/dist/${[...rest].join("/")}`;
+      }
+
+      try {
+        const pkg = require(fullPkgName);
+        if (pkg.bootstrap) {
+          pkg.bootstrap();
+        }
+      } catch(e) {
+        console.log(e)
+      }
+    }
   }
 
   resolveParentConfiguration(baseConfigName: string | null | undefined): ConfigDefinition {
     if (!baseConfigName) {
       return {};
     }
+
     const baseConfig = this.configRegistry.get(baseConfigName);
     const parentConfig = this.resolveParentConfiguration(baseConfig.extends);
     return this.mergeConfigurations(parentConfig, baseConfig);

@@ -6,9 +6,6 @@ import { NullLogger } from "@boll/core";
 import { bootstrapRecommendedConfiguration } from "@boll/recommended";
 export const test: any = baretest("e2e");
 
-test.before(async () => {
-  bootstrapRecommendedConfiguration();
-});
 
 test("should catch an error in project-a", async () => {
   await inFixtureDir("project-a", __dirname, async () => {

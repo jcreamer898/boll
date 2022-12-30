@@ -1,4 +1,4 @@
 "use strict";
 module.exports = {
-    extends: "boll:monorepo",
+    extends: "boll:recommended/monorepo",
 };
