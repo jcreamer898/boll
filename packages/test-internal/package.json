@@ -7,9 +7,11 @@
   "description": "@boll package used internally for shared testing logic",
   "devDependencies": {
     "@types/baretest": "^2.0.0",
+    "@types/node": "^18.11.18",
     "baretest": "^2.0.0",
     "prettier": "^2.8.1",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "typescript": "^4.9.4"
   },
   "files": [
     "dist"

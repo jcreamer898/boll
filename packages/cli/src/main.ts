@@ -19,6 +19,7 @@ export async function buildSuite(logger: Logger): Promise<Suite> {
     logger.error(`Unable to find ${fullConfigPath}; consider running "init" to create example config.`);
   }
   const config = new Config(ConfigRegistryInstance, RuleRegistryInstance, logger);
+  console.log(fullConfigPath)
   config.load(require(fullConfigPath));
   return await config.buildSuite();
 }
